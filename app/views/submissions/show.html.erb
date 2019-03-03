@@ -1,0 +1,18 @@
+<div class="submission-result">
+    Your income is...
+    <h1 class="classified">
+        <%= @submission.classified_as %>
+    </h1>
+    <% if @submission.was_correct.blank? %>
+        Is this correct?
+        <%= form_with(model: @submission, local: true, url: was_correct_submission_path(@submission)) do |form| %>
+            <%= form.hidden_field :was_correct, value: "true" %>
+            <%= form.submit "Yes" %>
+        <% end %>
+        /
+        <%= form_with(model: @submission, local: true, url: was_correct_submission_path(@submission)) do |form| %>
+            <%= form.hidden_field :was_correct, value: "false" %>
+            <%= form.submit "No" %>
+        <% end %>
+    <% end %>
+</div>

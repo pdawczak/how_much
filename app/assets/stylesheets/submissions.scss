@@ -1,0 +1,49 @@
+// Place all the styles related to the submissions controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.calculating {
+    background-image: asset-data-url("calculating.webp");
+    width: 374px;
+    height: 230px;
+    margin: 300px auto 100px auto;
+}
+
+.calculating-text {
+    font-size: larger;
+    text-align: center;
+}
+
+.the-form h1 {
+    margin-top: 300px;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.the-form .form-wrapper {
+    width: 500px;
+    margin: auto;
+}
+
+.the-form .form-wrapper #submission_hours_per_week,
+.the-form .form-wrapper #submission_capital_gain, {
+    text-align: right;
+}
+
+.the-form .actions {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.the-form .actions input {
+    font-size: large;
+}
+
+.submission-result {
+    padding-top: 300px;
+    text-align: center;
+}
+
+.submission-result form {
+    display: inline;
+}

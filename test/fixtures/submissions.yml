@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  education: 1
+  hours_per_week: 9.99
+  capital_gain: 9.99
+  male: false
+
+two:
+  education: 1
+  hours_per_week: 9.99
+  capital_gain: 9.99
+  male: false

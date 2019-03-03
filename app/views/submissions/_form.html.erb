@@ -1,0 +1,40 @@
+<%= form_with(model: submission, local: true) do |form| %>
+  <% if submission.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(submission.errors.count, "error") %> prohibited this submission from being saved:</h2>
+
+      <ul>
+      <% submission.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+      I studied for
+      <%= form.select :education, 1..13, id: :submission_male %>
+      years
+  </div>
+
+  <div class="field">
+      I work for
+      <%= form.text_field :hours_per_week, id: :submission_hours_per_week %>
+      hours per week
+  </div>
+
+  <div class="field">
+      I have
+    <%= form.text_field :capital_gain, id: :submission_capital_gain %>
+      capital gain in US Dollars
+  </div>
+
+  <div class="field">
+      I am a
+      <%= form.select :male, [["Male", true], ["Female", false]], id: :submission_male %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Check!" %>
+  </div>
+<% end %>
