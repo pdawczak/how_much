@@ -2,6 +2,7 @@
     Your income is...
     <h1 class="classified">
         <%= @submission.classified_as %>
+        <small>(USD)</small>
     </h1>
     <% if @submission.was_correct.blank? %>
         Is this correct?
