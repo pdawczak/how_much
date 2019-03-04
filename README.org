@@ -5,20 +5,20 @@
 A Machine Learning supported project for predicting the income level class. It 
 distinguishes between classes of "<= 50K" and "> 50K" in US Dollars. The
 model is trained using [[https://archive.ics.uci.edu/ml/datasets/adult][Adults income dataset]] and is integrated with really simple
-Rails application using [[https://github.com/nok/sklearn-porter][Sklearn-porter]] project, that generated native Ruby code.
+[[https://rubyonrails.org/][Rails]] application using [[https://github.com/nok/sklearn-porter][Sklearn-porter]] project, that generated native Ruby code.
 
 The demo application is hosted on [[https://www.heroku.com][Heroku]] and is available [[https://how-much-ml.herokuapp.com/][here]] (please be mindful
 if it takes a lot of time to load the first page - it's hosted on free service).
 
-/Please note, the model's accuracy is around 83%, but is based on data gathered/
-/in 1994, so will not be very accurate for Today's answers, nethertheless, it was/
+/Please note, the model's accuracy is around 83% but is based on data gathered/
+/in 1994, so will not be very accurate for Today's answers, nevertheless, it was/
 /great experience and fun project to build!/
 
 ** Train the Model
 
 The full research, engineering and choosing features for the model, and then
 searching for the best model and parameters is described [[file:ML/Adults_income.ipynb][here]], but the summary of
-findings are described here:
+findings are described below:
 
 1. Most correlated to the target variable features were:
 
@@ -43,8 +43,8 @@ findings are described here:
 
 ** Deploy the Model
 
-~Sklearn-Porter~ is able to generate native Ruby code, which will be used deploy
-the trained mode:
+~Sklearn-Porter~ is able to generate native Ruby code, which will be used to
+deploy the trained model:
 
 #+BEGIN_SRC python
 from sklearn_porter import Porter
@@ -85,8 +85,9 @@ Ml::IncomeClassifierModel.predict([
 ** Integrate with the rest of the application
 
 The features required for performing the prediction are expected to be passed in
-specific order and the predicted value will be either ~0~ or ~1~ (for "<= 50K" and
-"> 50K" respectively), so for convenience - these can be wrapped in another method.
+a specific order and the predicted value will be either ~0~ or ~1~ (for "<= 50K"
+and "> 50K" respectively), so for convenience - these can be wrapped in another
+method.
 
 Given the prediction will be performed based on values obtained from the form 
 submitted by the user, the helper method can look like the following:
