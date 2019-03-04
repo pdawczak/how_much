@@ -1,0 +1,127 @@
+* How Much
+  
+[[./docs/assets/ruby_less_3_python.png]]
+
+A Machine Learning supported project for predicting the income level class. It 
+distinguishes between classes of "<= 50K" and "> 50K" in US Dollars. The
+model is trained using [[https://archive.ics.uci.edu/ml/datasets/adult][Adults income dataset]] and is integrated with really simple
+Rails application using [[https://github.com/nok/sklearn-porter][Sklearn-porter]] project, that generated native Ruby code.
+
+The demo application is hosted on [[https://www.heroku.com][Heroku]] and is available [[https://how-much-ml.herokuapp.com/][here]] (please be mindful
+if it takes a lot of time to load the first page - it's hosted on free service).
+
+/Please note, the model's accuracy is around 83%, but is based on data gathered/
+/in 1994, so will not be very accurate for Today's answers, nethertheless, it was/
+/great experience and fun project to build!/
+
+** Train the Model
+
+The full research, engineering and choosing features for the model, and then
+searching for the best model and parameters is described [[file:ML/Adults_income.ipynb][here]], but the summary of
+findings are described here:
+
+1. Most correlated to the target variable features were:
+
+  #+BEGIN_SRC python
+    df.corr()["income_cat"].sort_values(ascending=False)
+    # education            0.324409
+    # hours-per-week       0.226346
+    # capital-gain         0.219655
+    # male                 0.205186
+  #+END_SRC
+
+2. These have been selected for training the models, which accuracy was:
+
+  | Model         | Best accuracy |
+  |---------------|---------------|
+  | Decision Tree |         82.0% |
+  | Random Forest |         82.5% |
+  | KNN           |         82.1% |
+
+3. The best performing model was based on the ~RandomForest~ algorithm, and this
+   one will be deployed.
+
+** Deploy the Model
+
+~Sklearn-Porter~ is able to generate native Ruby code, which will be used deploy
+the trained mode:
+
+#+BEGIN_SRC python
+from sklearn_porter import Porter
+
+porter = Porter(grid_for_forest.best_estimator_, language='ruby')
+output = porter.export(embed_data=True, class_name='Ml::IncomeClassifierModel')
+
+with open('../app/lib/ml/income_classifier_model.rb', 'w') as f:
+    f.write(output)
+#+END_SRC
+
+This would generate a class with the following interface:
+
+#+BEGIN_SRC ruby
+class Ml::IncomeClassifierModel
+  # ...
+
+  def self.predict(features)
+    # ...
+  end
+
+  # ...
+end
+#+END_SRC
+
+That could be used as follows:
+
+#+BEGIN_SRC ruby
+Ml::IncomeClassifierModel.predict([
+  10, # value associated to education
+  40, # value associated to hours_per_week
+   0, # value associated to capital_gain
+   1  # value indicating 1 for male or 0 for female
+])
+# => 0 or 1
+#+END_SRC
+
+** Integrate with the rest of the application
+
+The features required for performing the prediction are expected to be passed in
+specific order and the predicted value will be either ~0~ or ~1~ (for "<= 50K" and
+"> 50K" respectively), so for convenience - these can be wrapped in another method.
+
+Given the prediction will be performed based on values obtained from the form 
+submitted by the user, the helper method can look like the following:
+
+#+BEGIN_SRC ruby
+class Ml
+  def self.classify(submission)
+    submission.classified_as = predict([
+      submission.education,
+      submission.hours_per_week,
+      submission.capital_gain,
+      submission.male ? 1 : 0
+    ])
+  end
+
+  def self.predict(features)
+    classes = ["<= 50K", "> 50K"]
+    predicted = Ml::IncomeClassifierModel.predict(features)
+    classes[predicted]
+  end
+end
+#+END_SRC
+
+** Summary
+
+Even though the Machine Learning model has been trained on really old data (1994
+was 25 years ago, when writing this post in 2019) and will most likely not be 
+accurate for submissions of data reflecting Today's circumstances - this still was
+great exercise and an amazing experience!
+
+Now, when retrospectively considering where I spent most of my time when 
+developing this simple app - I had to put more effort in building the frontend
+of the application, rather than coming up with the Machine Learning engine 
+powering it...
+
+#+CAPTION: Frontend...
+#+NAME:    fig:frontend
+[[./docs/assets/summary.png]]
