@@ -13,7 +13,7 @@
 
   <div class="field">
       I studied for
-      <%= form.select :education, 1..13, id: :submission_male %>
+      <%= form.select :education, (1..12).map { |n| [n, n] } << ["13 +", 13], id: :submission_male %>
       years
   </div>
 
